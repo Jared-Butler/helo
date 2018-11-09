@@ -6,7 +6,9 @@ class Auth extends Component {
         super();
         this.state = {
             username: '',
-            password: ''
+            password:'',
+            id: '',
+            picture: ''
         }
     }
 
@@ -31,46 +33,54 @@ class Auth extends Component {
         })
 
         if (res.data.status === 'loggedIn') {
+            console.log(res.data);
+            this.setState({
+                username: res.data.username,
+                id: res.data.id,
+                picture: res.data.picture,
+                password: ''
+            });
+            console.log(this.state);
             this.props.history.push('/dashboard')
         }
-        else{ alert(res.data) }
+        else { alert(res.data) }
     }
 
 
-    register =  async () => {
-    if (!this.state.username || !this.state.password) return alert('Please fill out username and password.')
-  
-    let res = await axios.post('/auth/register', {
-        username: this.state.username,
-        password: this.state.password
-    })
-    
-    if (res.data.status === 'loggedIn') {
-        this.props.history.push('/dashboard')
-    }
-    else{ alert(res.data) }
+    register = async () => {
+        if (!this.state.username || !this.state.password) return alert('Please fill out username and password.')
 
-   }
+        let res = await axios.post('/auth/register', {
+            username: this.state.username,
+            password: this.state.password
+        })
+
+        if (res.data.status === 'loggedIn') {
+            this.props.history.push('/dashboard')
+        }
+        else { alert(res.data) }
+
+    }
 
     render() {
         return (
             <div>
-                
-                    <div>
+
+                <div>
                     <h3>Username</h3>
                     <br />
                     <input onChange={this.updateUsername} />
-                    </div>
-                    <div>
-                    </div>
-                    <h3>Password</h3>
-                    <br />
-                    <input onChange={this.updatePassword} />
-                    <br />
-                    <button onClick={() => { this.login() }} type='button'>Login</button>
-                    <button onClick={() => { this.register() }} type='button'>Register</button>
+                </div>
+                <div>
+                </div>
+                <h3>Password</h3>
+                <br />
+                <input onChange={this.updatePassword} />
+                <br />
+                <button onClick={() => { this.login() }} type='button'>Login</button>
+                <button onClick={() => { this.register() }} type='button'>Register</button>
 
-                
+
             </div>
         )
     }

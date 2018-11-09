@@ -15,7 +15,12 @@ module.exports={
         let db = req.app.get('db');
         let foundUser = await db.find_user([username]);        
         if (foundUser[0]) {
-            if(foundUser[0].password === password) {res.status(200).send({status: 'loggedIn'})}
+            if(foundUser[0].password === password) {res.status(200).send({
+                status: 'loggedIn',
+                username: foundUser[0].user_name ,
+                id: foundUser[0].id,
+                picture: ''
+            })}
             else{res.status(401).send('Incorrect Password')}
         }
         else { res.status(401).send('Username not found')}
